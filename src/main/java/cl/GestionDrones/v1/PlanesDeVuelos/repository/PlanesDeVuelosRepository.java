@@ -15,4 +15,6 @@ public interface PlanesDeVuelosRepository extends JpaRepository<PlanesDeVuelos, 
     List<PlanesDeVuelos> findByRunPiloto(String runPiloto);
     
     List<PlanesDeVuelos> findByPatenteDron(String patenteDron);
+
+    List<PlanesDeVuelos> findByRutContratista(String rutContratista);
 }

@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Table(name = "planes_de_vuelos")
 public class PlanesDeVuelos {
 
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
@@ -42,12 +42,15 @@ public class PlanesDeVuelos {
     @Column(name = "altitud_maxima_mt", nullable = false)
     private Double altitudMaximaMt;
 
+    @Column(name = "rut_contratista", nullable = false, length = 20)
+    private String rutContratista;
 
     public PlanesDeVuelos() {}
 
+    
     public PlanesDeVuelos(Long id, String runPiloto, String patenteDron, LocalDate fechaEstimadaVuelo, 
                           LocalTime horaInicio, LocalTime horaFin, String coordenadasOrigen, 
-                          String coordenadasDestino, Double altitudMaximaMt ) {
+                          String coordenadasDestino, Double altitudMaximaMt, String rutContratista) {
         this.id = id;
         this.runPiloto = runPiloto;
         this.patenteDron = patenteDron;
@@ -57,6 +60,7 @@ public class PlanesDeVuelos {
         this.coordenadasOrigen = coordenadasOrigen;
         this.coordenadasDestino = coordenadasDestino;
         this.altitudMaximaMt = altitudMaximaMt;
+        this.rutContratista = rutContratista; // Asignación del nuevo campo
     }
 
     // Getters y Setters
@@ -87,4 +91,7 @@ public class PlanesDeVuelos {
     public Double getAltitudMaximaMt() { return altitudMaximaMt; }
     public void setAltitudMaximaMt(Double altitudMaximaMt) { this.altitudMaximaMt = altitudMaximaMt; }
 
+    
+    public String getRutContratista() { return rutContratista; }
+    public void setRutContratista(String rutContratista) { this.rutContratista = rutContratista; }
 }

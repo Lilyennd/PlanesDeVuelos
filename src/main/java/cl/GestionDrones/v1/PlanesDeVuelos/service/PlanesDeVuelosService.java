@@ -70,4 +70,8 @@ public class PlanesDeVuelosService {
     public int totalPlanesDeVuelos() {
         return planesDeVuelosRepository.findAll().size();
     }
+    
+    public List<PlanesDeVuelos> getPlanesPorContratista(String rutContratista) {
+    return planesDeVuelosRepository.findByRutContratista(rutContratista);
+    }
 }

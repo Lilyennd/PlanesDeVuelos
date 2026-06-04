@@ -37,6 +37,9 @@ public record UpdatePlanRequest(
     String coordenadasDestino,
 
     @NotNull(message = "La altitud máxima es obligatoria")
-    Double altitudMaximaMt
+    Double altitudMaximaMt,
+
+    @NotBlank(message = "El RUT del contratista es obligatorio")
+    String rutContratista
 ) {
 }

@@ -16,7 +16,8 @@ public class PlanesDeVuelosMapper {
             request.horaFin(),
             request.coordenadasOrigen(),
             request.coordenadasDestino(),
-            request.altitudMaximaMt()
+            request.altitudMaximaMt(),
+            request.rutContratista()
         );
     }
 
@@ -29,5 +30,6 @@ public class PlanesDeVuelosMapper {
         entity.setCoordenadasOrigen(dto.coordenadasOrigen());
         entity.setCoordenadasDestino(dto.coordenadasDestino());
         entity.setAltitudMaximaMt(dto.altitudMaximaMt());
+        entity.setRutContratista(dto.rutContratista());
     }
 }
