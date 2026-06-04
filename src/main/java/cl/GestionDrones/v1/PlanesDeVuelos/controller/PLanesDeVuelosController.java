@@ -17,7 +17,7 @@ import cl.GestionDrones.v1.PlanesDeVuelos.model.PlanesDeVuelos;
 import cl.GestionDrones.v1.PlanesDeVuelos.service.PlanesDeVuelosService;
 
 @RestController
-@RequestMapping("/api/planes-de-vuelos")
+@RequestMapping("/api/planes-vuelo")
 public class PLanesDeVuelosController {
 
     @Autowired
@@ -130,4 +130,18 @@ public class PLanesDeVuelosController {
     public ResponseEntity<Integer> getTotalPlanes() {
         return new ResponseEntity<>(planesDeVuelosService.totalPlanesDeVuelos(), HttpStatus.OK);
     }
+    @GetMapping("/contratista/{rutContratista}")
+public ResponseEntity<?> getPlanesPorContratista(@PathVariable String rutContratista) {
+    List<PlanesDeVuelos> planes = planesDeVuelosService.getPlanesPorContratista(rutContratista);
+    
+    if (planes.isEmpty()) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "No encontrado");
+        error.put("mensaje", "No hay planes de vuelo para el contratista con RUT: " + rutContratista);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(planes, HttpStatus.OK);
+}
+
+
 }
