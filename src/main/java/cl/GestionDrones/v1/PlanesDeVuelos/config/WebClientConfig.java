@@ -26,7 +26,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient zonasWebClient(WebClient.Builder builder) {
-        return builder.baseUrl("http://localhost:8090/api/v1/zonas-restringidas").build();
+        return builder.baseUrl("http://localhost:8090/api/v1/ZonasRestringidas").build();
     }
 
   

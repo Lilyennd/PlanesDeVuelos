@@ -17,7 +17,7 @@ import cl.GestionDrones.v1.PlanesDeVuelos.model.PlanesDeVuelos;
 import cl.GestionDrones.v1.PlanesDeVuelos.service.PlanesDeVuelosService;
 
 @RestController
-@RequestMapping("/api/planes-vuelo")
+@RequestMapping("/api/v1/planesDeVuelos")
 public class PLanesDeVuelosController {
 
     @Autowired

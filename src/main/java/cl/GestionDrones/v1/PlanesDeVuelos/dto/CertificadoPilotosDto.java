@@ -35,7 +35,6 @@ public class CertificadoPilotosDto {
     public LocalDate getFechaVencimientoCertificacion() { return fechaVencimientoCertificacion; }
     public void setFechaVencimientoCertificacion(LocalDate fechaVencimientoCertificacion) { this.fechaVencimientoCertificacion = fechaVencimientoCertificacion; }
 
-    // Método utilitario para saber si el certificado está vigente
     public boolean isCertificadoVigente() {
         return fechaVencimientoCertificacion != null && fechaVencimientoCertificacion.isAfter(LocalDate.now());
     }
