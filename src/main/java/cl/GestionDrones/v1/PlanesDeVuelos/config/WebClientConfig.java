@@ -32,6 +32,6 @@ public class WebClientConfig {
   
     @Bean
     public WebClient notificacionesWebClient(WebClient.Builder builder) {
-        return builder.baseUrl("http://localhost:8088/api/v1/notificaciones").build();
+        return builder.baseUrl("http://localhost:8091/api/v1/notificaciones").build();
     }
 }

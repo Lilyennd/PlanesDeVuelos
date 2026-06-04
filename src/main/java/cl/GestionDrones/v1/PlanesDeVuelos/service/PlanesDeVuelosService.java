@@ -71,13 +71,14 @@ public class PlanesDeVuelosService {
         }
 
         // 1. Validar piloto — certificado DGAC vigente
-        CertificadoPilotosDto piloto = pilotosClient.obtenerPorRun(request.runPiloto());
+        CertificadoPilotosDto piloto = pilotosClient.obtenerCertificado(request.runPiloto());
         if (piloto == null || !piloto.isCertificadoVigente()) {
             throw new RuntimeException("El piloto no existe o su certificado DGAC está vencido.");
         }
 
         // 2. Validar aeronave — seguro vigente
-        SeguroAeronaveDto aeronave = aeronavesClient.obtenerPorPatente(request.patenteDron());
+        SeguroAeronaveDto aeronave = aeronavesClient.obtenerSeguro(request.patenteDron());
+        
         if (aeronave == null || !aeronave.isSeguroVigente()) {
             throw new RuntimeException("La aeronave no existe o su seguro está vencido.");
         }
