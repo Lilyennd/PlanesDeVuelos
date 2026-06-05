@@ -60,8 +60,12 @@ public class PLanesDeVuelosController {
     }
 
    
-    @PutMapping
-    public ResponseEntity<?> updatePlan(@Valid @RequestBody UpdatePlanRequest request, BindingResult result) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePlan(
+            @PathVariable Long id, 
+            @Valid @RequestBody UpdatePlanRequest request, 
+            BindingResult result) {
+        
         if (result.hasErrors()) {
             Map<String, String> errores = new HashMap<>();
             result.getFieldErrors().forEach(error -> 
@@ -69,11 +73,10 @@ public class PLanesDeVuelosController {
             );
             return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
         }
-
-        PlanesDeVuelos planActualizado = planesDeVuelosService.updatePlanDeVuelo(request);
+        PlanesDeVuelos planActualizado = planesDeVuelosService.updatePlanDeVuelo(id, request);
+        
         return new ResponseEntity<>(planActualizado, HttpStatus.OK);
     }
-
    
 
     @DeleteMapping("/{id}")

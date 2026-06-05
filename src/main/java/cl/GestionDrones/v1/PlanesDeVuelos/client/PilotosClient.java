@@ -1,8 +1,6 @@
 package cl.GestionDrones.v1.PlanesDeVuelos.client;
 
 import cl.GestionDrones.v1.PlanesDeVuelos.dto.CertificadoPilotosDto;
-import cl.GestionDrones.v1.PlanesDeVuelos.dto.PilotoWrapper;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,14 +19,11 @@ public class PilotosClient {
 
        public CertificadoPilotosDto obtenerCertificado(String runPiloto) {
         try {
-            PilotoWrapper response = webClient.get()
+            return webClient.get()
                     .uri("/run/{run}", runPiloto) 
                     .retrieve()
-                    .bodyToMono(PilotoWrapper.class) 
+                    .bodyToMono(CertificadoPilotosDto.class) 
                     .block();
-
-
-            return (response != null) ? response.getDatos() : null;
 
         } catch (WebClientResponseException.NotFound e) {
             return null; 

@@ -9,8 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UpdatePlanRequest(
-    @NotNull(message = "El ID del plan de vuelo es obligatorio para actualizar")
-    Long id,
 
     @NotBlank(message = "El RUN del piloto es obligatorio")
     @Size(max = 20, message = "El RUN no puede superar los 20 caracteres")

@@ -22,7 +22,6 @@ public class PlanesDeVuelosMapper {
     }
 
     public static void updateEntityFromDto(UpdatePlanRequest dto, PlanesDeVuelos entity) {
-        entity.setRunPiloto(dto.runPiloto());
         entity.setPatenteDron(dto.patenteDron());
         entity.setFechaEstimadaVuelo(dto.fechaEstimadaVuelo());
         entity.setHoraInicio(dto.horaInicio());

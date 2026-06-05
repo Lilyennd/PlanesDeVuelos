@@ -70,20 +70,17 @@ public class PlanesDeVuelosService {
             throw new FechaInvalidaException("La hora de inicio no puede ser posterior a la hora de término.");
         }
 
-        // 1. Validar piloto — certificado DGAC vigente
         CertificadoPilotosDto piloto = pilotosClient.obtenerCertificado(request.runPiloto());
         if (piloto == null || !piloto.isCertificadoVigente()) {
             throw new RuntimeException("El piloto no existe o su certificado DGAC está vencido.");
         }
 
-        // 2. Validar aeronave — seguro vigente
         SeguroAeronaveDto aeronave = aeronavesClient.obtenerSeguro(request.patenteDron());
         
         if (aeronave == null || !aeronave.isSeguroVigente()) {
             throw new RuntimeException("La aeronave no existe o su seguro está vencido.");
         }
 
-        // 3. Validar zona restringida
         Boolean restringida = zonasRestringidasClient.verificarCoordenadas(
             request.coordenadasOrigen(),
             request.coordenadasDestino()
@@ -92,12 +89,10 @@ public class PlanesDeVuelosService {
             throw new RuntimeException("El plan de vuelo cruza una zona restringida. No puede ser aprobado.");
         }
 
-        // 4. Guardar el plan aprobado
         PlanesDeVuelos planGuardado = planesDeVuelosRepository.save(
             PlanesDeVuelosMapper.toPlanes(request)
         );
 
-        // 5. Notificar
         notificacionesClient.enviarNotificacion(new NotificacionRequest(
             "CONTRATISTA",
             1L,
@@ -110,13 +105,13 @@ public class PlanesDeVuelosService {
         return planGuardado;
     }
 
-    public PlanesDeVuelos updatePlanDeVuelo(UpdatePlanRequest request) {
+    public PlanesDeVuelos updatePlanDeVuelo(Long id, UpdatePlanRequest request) {
         if (request.horaInicio().isAfter(request.horaFin())) {
             throw new FechaInvalidaException("La hora de inicio no puede ser posterior a la hora de término.");
         }
 
-        PlanesDeVuelos planExistente = planesDeVuelosRepository.findById(request.id())
-                .orElseThrow(() -> new ResourceNotFoundException("No se puede actualizar. No existe el plan de vuelo con el ID: " + request.id()));
+        PlanesDeVuelos planExistente = planesDeVuelosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No se puede actualizar. No existe el plan de vuelo con el ID: " + id));
 
         PlanesDeVuelosMapper.updateEntityFromDto(request, planExistente);
         return planesDeVuelosRepository.save(planExistente);
