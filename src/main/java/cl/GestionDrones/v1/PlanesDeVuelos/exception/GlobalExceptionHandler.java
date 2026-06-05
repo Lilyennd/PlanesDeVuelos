@@ -47,10 +47,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
     }
 
-    /**
-     * 3. ERRORES DE PARSEO: Capta cuando el JSON viene mal escrito o las fechas (LocalDate) 
-     * no tienen el formato correcto (ej: enviar "25-12-2026" en lugar de "2026-12-25").
-     */
+    
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleJsonParseError(HttpMessageNotReadableException ex) {
         System.out.println("🟡 Error de lectura en el JSON enviado");

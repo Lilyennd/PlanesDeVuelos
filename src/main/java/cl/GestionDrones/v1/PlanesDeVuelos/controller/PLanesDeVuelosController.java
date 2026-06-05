@@ -29,19 +29,11 @@ public class PLanesDeVuelosController {
         return new ResponseEntity<>(planesDeVuelosService.getPlanesDeVuelos(), HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPlanById(@PathVariable Long id) {
+    public ResponseEntity<PlanesDeVuelos> getPlanById(@PathVariable Long id) {
         PlanesDeVuelos plan = planesDeVuelosService.getPlanDeVueloId(id);
         
-        if (plan == null) {
-            Map<String, String> error = new HashMap<>();
-            error.put("error", "No encontrado");
-            error.put("mensaje", "No existe el plan de vuelo con el ID: " + id);
-            
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND); // Retorna 404
-        }
-        return new ResponseEntity<>(plan, HttpStatus.OK); // Retorna 200
+        return ResponseEntity.ok(plan);
     }
 
 
@@ -141,7 +133,5 @@ public ResponseEntity<?> getPlanesPorContratista(@PathVariable String rutContrat
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(planes, HttpStatus.OK);
-}
-
-
+    }
 }

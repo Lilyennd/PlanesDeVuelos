@@ -60,10 +60,10 @@ public class PlanesDeVuelos {
         this.coordenadasOrigen = coordenadasOrigen;
         this.coordenadasDestino = coordenadasDestino;
         this.altitudMaximaMt = altitudMaximaMt;
-        this.rutContratista = rutContratista; // Asignación del nuevo campo
+        this.rutContratista = rutContratista; 
     }
 
-    // Getters y Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
