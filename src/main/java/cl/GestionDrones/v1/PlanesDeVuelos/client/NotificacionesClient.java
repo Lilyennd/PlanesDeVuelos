@@ -17,13 +17,19 @@ public class NotificacionesClient {
     }
 
     public void enviarNotificacion(NotificacionRequest notificacion) {
-        webClient.post()
-                .uri("/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(notificacion)
-                .retrieve()
-                .bodyToMono(Void.class)
-                .onErrorComplete()
-                .block();
+        try {
+            webClient.post()
+                    .uri("") 
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(notificacion)
+                    .retrieve()
+                    .bodyToMono(String.class) 
+                    .block();
+            
+            System.out.println("✅ Notificación enviada con éxito al puerto 8091");
+
+        } catch (Exception e) {
+            System.err.println("🚨 ERROR ENVIANDO NOTIFICACIÓN: " + e.getMessage());
+        }
     }
 }
