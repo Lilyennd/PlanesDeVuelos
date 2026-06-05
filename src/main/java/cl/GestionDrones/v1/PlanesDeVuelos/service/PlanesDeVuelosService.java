@@ -61,7 +61,7 @@ public class PlanesDeVuelosService {
     }
 
     public int totalPlanesDeVuelos() {
-        return planesDeVuelosRepository.findAll().size();
+    return (int) planesDeVuelosRepository.count();
     }
 
     public PlanesDeVuelos savePlanDeVuelo(CreatePlanRequest request) {
