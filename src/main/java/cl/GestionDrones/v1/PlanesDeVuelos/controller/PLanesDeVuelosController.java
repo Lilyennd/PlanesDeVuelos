@@ -1,5 +1,4 @@
 package cl.GestionDrones.v1.PlanesDeVuelos.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import cl.GestionDrones.v1.PlanesDeVuelos.service.PlanesDeVuelosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -58,6 +58,18 @@ public class PLanesDeVuelosController {
     }
 
     @Operation(summary = "Crear un nuevo plan de vuelo", description = "Registra un nuevo plan de vuelo en el sistema con validación previa de los datos")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Estructura JSON del nuevo plan de vuelo a registrar",
+        required = true,
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = CreatePlanRequest.class),
+            examples = @ExampleObject(
+                name = "Ejemplo de Nuevo Plan de Vuelo",
+                value = "{\n  \"runPiloto\": \"12345678-9\",\n  \"patenteDron\": \"DRON-99X-CL\",\n  \"fechaEstimadaVuelo\": \"2026-06-25\",\n  \"horaInicio\": \"09:00:00\",\n  \"horaFin\": \"11:30:00\",\n  \"coordenadasOrigen\": \"-33.456, -70.654\",\n  \"coordenadasDestino\": \"-33.472, -70.681\",\n  \"altitudMaximaMt\": 120.5,\n  \"rutContratista\": \"76123456-K\"\n}"
+            )
+        )
+    )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Plan de vuelo creado exitosamente", 
                      content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlanesDeVuelos.class))),
@@ -65,7 +77,6 @@ public class PLanesDeVuelosController {
     })
     @PostMapping
     public ResponseEntity<?> createPlan(
-        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Estructura JSON del nuevo plan de vuelo a registrar", required = true)
         @Valid @RequestBody CreatePlanRequest request, 
         BindingResult result
     ) {
@@ -82,6 +93,18 @@ public class PLanesDeVuelosController {
     }
 
     @Operation(summary = "Actualizar un plan de vuelo", description = "Modifica los datos de un plan de vuelo existente de acuerdo con su ID")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description = "Estructura JSON con los nuevos campos del plan de vuelo",
+        required = true,
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UpdatePlanRequest.class),
+            examples = @ExampleObject(
+                name = "Ejemplo de Actualización de Plan de Vuelo",
+                value = "{\n  \"runPiloto\": \"12345678-9\",\n  \"patenteDron\": \"DRON-99X-CL\",\n  \"fechaEstimadaVuelo\": \"2026-06-25\",\n  \"horaInicio\": \"10:00:00\",\n  \"horaFin\": \"12:30:00\",\n  \"coordenadasOrigen\": \"-33.456, -70.654\",\n  \"coordenadasDestino\": \"-33.490, -70.700\",\n  \"altitudMaximaMt\": 150.0,\n  \"rutContratista\": \"76123456-K\"\n}"
+            )
+        )
+    )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Plan de vuelo actualizado exitosamente", 
                      content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlanesDeVuelos.class))),
@@ -92,7 +115,6 @@ public class PLanesDeVuelosController {
     public ResponseEntity<?> updatePlan(
             @Parameter(description = "ID del plan de vuelo que se desea actualizar", required = true, example = "1")
             @PathVariable Long id, 
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Estructura JSON con los nuevos campos del plan de vuelo", required = true)
             @Valid @RequestBody UpdatePlanRequest request, 
             BindingResult result
     ) {
