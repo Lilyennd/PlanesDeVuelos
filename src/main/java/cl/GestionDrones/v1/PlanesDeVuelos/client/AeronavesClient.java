@@ -12,25 +12,23 @@ public class AeronavesClient {
 
     private final WebClient webClient;
 
-    public AeronavesClient(@Qualifier("aeronavesWebClient") WebClient webClient) {
+  public AeronavesClient(@Qualifier("aeronavesWebClient") WebClient webClient) {
         this.webClient = webClient;
     }
 
     public SeguroAeronaveDto obtenerSeguro(String patente) {
         try {
-            SeguroAeronaveDto[] response = webClient.get()
+            return webClient.get()
                     .uri("/patente/{patente}", patente) 
                     .retrieve()
-                    .bodyToMono(SeguroAeronaveDto[].class) 
+                    .bodyToMono(SeguroAeronaveDto.class) 
                     .block();
 
-            if (response != null && response.length > 0) {
-                return response[0]; 
-            }
-            return null;
-
         } catch (WebClientResponseException.NotFound e) {
-            return null; 
+            return null; // Si devuelve un 404, retorna null
+        } catch (Exception e) {
+            System.out.println("Error al conectar con Aeronaves: " + e.getMessage());
+            return null;
         }
     }
 }
