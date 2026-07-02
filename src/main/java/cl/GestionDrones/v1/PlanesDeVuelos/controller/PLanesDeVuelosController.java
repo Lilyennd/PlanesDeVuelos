@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cl.GestionDrones.v1.PlanesDeVuelos.client.ContratistasClient;
 import cl.GestionDrones.v1.PlanesDeVuelos.dto.CreatePlanRequest;
 import cl.GestionDrones.v1.PlanesDeVuelos.dto.UpdatePlanRequest;
 import cl.GestionDrones.v1.PlanesDeVuelos.model.PlanesDeVuelos;
@@ -28,6 +29,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/v1/planesDeVuelos")
 public class PLanesDeVuelosController {
 
+    @Autowired
+    private ContratistasClient contratistasClient;  
     @Autowired
     private PlanesDeVuelosService planesDeVuelosService;
 
@@ -86,6 +89,14 @@ public class PLanesDeVuelosController {
                 errores.put(error.getField(), error.getDefaultMessage())
             );
             return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
+        }
+
+        boolean contratistaExiste = contratistasClient.verificarContratistaExiste(request.rutContratista());
+        
+        if (!contratistaExiste) {
+            Map<String, String> errorContratista = new HashMap<>();
+            errorContratista.put("rutContratista", "La empresa contratista con este RUT no está registrada en el sistema.");
+            return new ResponseEntity<>(errorContratista, HttpStatus.BAD_REQUEST);
         }
 
         PlanesDeVuelos nuevoPlan = planesDeVuelosService.savePlanDeVuelo(request);

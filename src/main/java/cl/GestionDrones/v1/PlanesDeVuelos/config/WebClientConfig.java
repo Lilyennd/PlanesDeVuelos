@@ -44,4 +44,13 @@ public class WebClientConfig {
     public WebClient notificacionesWebClient(WebClient.Builder builder) {
         return builder.baseUrl(notificacionesUrl).build();
     }
+
+
+    @Value("${api.url.contratistas}")
+private String contratistasUrl;
+
+@Bean
+public WebClient contratistasWebClient(WebClient.Builder builder) {
+    return builder.baseUrl(contratistasUrl).build();
+}
 }
