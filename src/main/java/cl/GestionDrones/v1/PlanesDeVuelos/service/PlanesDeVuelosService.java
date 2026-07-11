@@ -16,6 +16,7 @@ import cl.GestionDrones.v1.PlanesDeVuelos.dto.NotificacionRequest;
 import cl.GestionDrones.v1.PlanesDeVuelos.dto.SeguroAeronaveDto;
 import cl.GestionDrones.v1.PlanesDeVuelos.dto.UpdatePlanRequest;
 import cl.GestionDrones.v1.PlanesDeVuelos.exception.FechaInvalidaException;
+import cl.GestionDrones.v1.PlanesDeVuelos.exception.OperacionNoPermitidaException;
 import cl.GestionDrones.v1.PlanesDeVuelos.exception.ResourceNotFoundException;
 import cl.GestionDrones.v1.PlanesDeVuelos.mapper.PlanesDeVuelosMapper;
 import cl.GestionDrones.v1.PlanesDeVuelos.model.PlanesDeVuelos;
@@ -71,14 +72,23 @@ public class PlanesDeVuelosService {
         }
 
         CertificadoPilotosDto piloto = pilotosClient.obtenerCertificado(request.runPiloto());
-        if (piloto == null || !piloto.isCertificadoVigente()) {
-            throw new RuntimeException("El piloto no existe o su certificado DGAC está vencido.");
+        if (piloto == null) {
+            throw new ResourceNotFoundException(
+                "El piloto con RUN " + request.runPiloto() + " no existe.");
+        }
+        if (!piloto.isCertificadoVigente()) {
+            throw new OperacionNoPermitidaException(
+                "El certificado DGAC del piloto con RUN " + request.runPiloto() + " está vencido.");
         }
 
         SeguroAeronaveDto aeronave = aeronavesClient.obtenerSeguro(request.patenteDron());
-        
-        if (aeronave == null || !aeronave.isSeguroVigente()) {
-            throw new RuntimeException("La aeronave no existe o su seguro está vencido.");
+        if (aeronave == null) {
+            throw new ResourceNotFoundException(
+                "La aeronave con patente " + request.patenteDron() + " no existe.");
+        }
+        if (!aeronave.isSeguroVigente()) {
+            throw new OperacionNoPermitidaException(
+                "El seguro de la aeronave con patente " + request.patenteDron() + " está vencido.");
         }
 
         Boolean restringida = zonasRestringidasClient.verificarCoordenadas(
@@ -86,7 +96,8 @@ public class PlanesDeVuelosService {
             request.coordenadasDestino()
         );
         if (Boolean.TRUE.equals(restringida)) {
-            throw new RuntimeException("El plan de vuelo cruza una zona restringida. No puede ser aprobado.");
+            throw new OperacionNoPermitidaException(
+                "El plan de vuelo cruza una zona restringida. No puede ser aprobado.");
         }
 
         PlanesDeVuelos planGuardado = planesDeVuelosRepository.save(
